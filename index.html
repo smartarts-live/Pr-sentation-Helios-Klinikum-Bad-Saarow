@@ -185,36 +185,6 @@
             color: var(--helios-cyan);
         }
 
-        /* NEU: DARK MODE SLIDE (Für Slide 10) */
-        .slide-dark {
-            background-color: var(--helios-darkblue);
-            color: white;
-        }
-        .slide-dark h1, .slide-dark h3 {
-            color: white !important;
-        }
-        .slide-dark h2 {
-            color: var(--helios-cyan) !important;
-        }
-        .qr-container-dark {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            border: 1px solid var(--helios-cyan);
-        }
-        .qr-code-helios {
-            max-width: 200px;
-            width: 100%;
-            height: auto;
-            filter: invert(1) brightness(1.2) drop-shadow(0 0 2px var(--helios-cyan));
-            mix-blend-mode: screen; 
-        }
-
         /* NAVIGATION */
         .controls {
             position: fixed;
@@ -296,9 +266,6 @@
             }
             .controls { display: none !important; }
             .grid-2 { grid-template-columns: 1fr 1fr !important; gap: 40px; }
-            .slide-dark { background-color: white !important; color: black !important; }
-            .slide-dark h1, .slide-dark h3 { color: #00324C !important; }
-            .qr-code-helios { filter: none !important; mix-blend-mode: normal !important; }
         }
     </style>
 </head>
@@ -338,16 +305,16 @@
             <div class="helios-branding">Helios<span>Gesundheit</span></div>
             <div class="slide-header">
                 <h1>Die Klinik-Realität</h1>
-                <h2>Das "Wir-Gefühl" im Fokus</h2>
+                <h2>Gemeinsam Bedürfnisse ermitteln</h2>
             </div>
             <div class="grid-2">
                 <div>
-                    <h3>Der wahre Bedarf</h3>
-                    <p>Medizinisches Personal ist resilient und professionell. Das Problem ist nicht die Belastung, sondern die Sichtbarkeit.</p>
+                    <h3>Der Status Quo</h3>
+                    <p>Medizinisches Personal ist resilient und professionell. Mein Ziel ist es, genau zu verstehen, was die Teams im Alltag wirklich bewegt.</p>
                     <ul>
-                        <li><strong>Silo-Denken:</strong> Starke Trennung zwischen Stationen & Verwaltung.</li>
-                        <li><strong>Lifestyle:</strong> Schichtarbeit ist eine bewusste Entscheidung, kein "Problem".</li>
-                        <li><strong>Wunsch:</strong> Hochwertige Angebote, die in den Alltag passen.</li>
+                        <li><strong>Zusammenhalt:</strong> Wie überwinden wir Silo-Denken zwischen den Berufsgruppen?</li>
+                        <li><strong>Lifestyle:</strong> Wie unterstützen wir das Lebensmodell "Schichtdienst" optimal?</li>
+                        <li><strong>Kultur:</strong> Wo wünschen sich die Teams mehr Austausch und Gemeinschaft?</li>
                     </ul>
                 </div>
                 <div>
@@ -365,9 +332,9 @@
                     </div>
                     <h3>Der Ansatz</h3>
                     <div class="highlight-box">
-                        <strong>Verbindung statt "Therapie"</strong>
+                        <strong>Verbindung schaffen</strong>
                     </div>
-                    <p>Wir müssen niemanden retten. Wir müssen Räume schaffen (Events & Kultur), in denen Erfolge gefeiert werden und Austausch stattfindet.</p>
+                    <p>Es geht nicht darum, Profis zu "therapieren", sondern Räume zu schaffen (Events & Kultur), in denen Erfolge gefeiert werden und echter Austausch stattfindet.</p>
                 </div>
             </div>
         </div>
@@ -375,16 +342,24 @@
         <div class="slide" id="slide-3">
             <div class="helios-branding">Helios<span>Gesundheit</span></div>
             <div class="slide-header">
-                <h1>1. Die "Success-Visite"</h1>
-                <h2>Marketing nach innen tragen</h2>
+                <h1>1. Die "Campus-Visite"</h1>
+                <h2>Zuhören & Erfolge sichtbar machen</h2>
             </div>
             <div class="grid-2">
                 <div>
-                    <h3>Aktives "Story Scouting"</h3>
-                    <p>Statt nur nach Problemen zu fragen, suchen wir nach Erfolgsgeschichten für die interne Kommunikation.</p>
+                    <h3>Der ganzheitliche Ansatz</h3>
+                    <p>Eine regelmäßige Präsenz auf den Stationen ist essenziell. Dabei verfolge ich zwei Ziele gleichzeitig:</p>
+                    
+                    <h3>A) Ehrliche Reflexion ("Kiesel im Schuh")</h3>
                     <ul>
-                        <li><strong>Präsenz:</strong> Regelmäßige Gänge durch die Stationen, um "Good News" einzusammeln.</li>
-                        <li><strong>Listening:</strong> Was bewegt die Teams? Wo fehlt Information?</li>
+                        <li>Wo hakt es im Alltag?</li>
+                        <li>Welche kleinen Hindernisse können wir aus dem Weg räumen?</li>
+                    </ul>
+
+                    <h3>B) Story Scouting (Erfolge feiern)</h3>
+                    <ul>
+                        <li>Was lief diese Woche besonders gut?</li>
+                        <li>Welche "Stillen Helden" haben Anerkennung verdient?</li>
                     </ul>
                 </div>
                 <div>
@@ -396,13 +371,14 @@
                             <line x1="150" y1="100" x2="165" y2="130" class="svg-line" />
                             <rect x="130" y="60" width="20" height="30" class="svg-fill-white" /> 
                             <path d="M40 30 Q 100 30, 100 60 Q 100 90, 70 90 L 50 110 L 50 90 Q 20 90, 20 60 Q 20 30, 40 30" class="svg-line" />
-                            <path d="M50 50 L 70 60 L 50 70" class="svg-accent" /> </svg>
+                            <path d="M60 45 L 65 60 L 80 60 L 68 70 L 73 85 L 60 75 L 47 85 L 52 70 L 40 60 L 55 60 Z" class="svg-accent" fill="#009EB3" />
+                        </svg>
                     </div>
                     <h3>Umsetzung Bad Saarow</h3>
                     <div class="highlight-box">
-                        <strong>Mobile Office & Touchpoints</strong>
+                        <strong>Balance halten</strong>
                     </div>
-                    <p>Sichtbarkeit in den Pausenräumen. Nicht als "Problemlöser", sondern als Ansprechpartner für Events und Campus-Leben.</p>
+                    <p>Ich bin Ansprechpartner für beides: Für das offene Ohr bei Problemen, aber vor allem auch als Verstärker für die positiven Geschichten, die im Klinikalltag oft untergehen.</p>
                 </div>
             </div>
         </div>
@@ -622,41 +598,9 @@
             </div>
         </div>
 
-        <div class="slide slide-dark" id="slide-10">
-            <div class="helios-branding" style="color: white;">Helios<span>Gesundheit</span></div>
-            
-            <div class="slide-header" style="border-color: var(--helios-cyan);">
-                <h1>Let's Connect</h1>
-                <h2>Der direkte Draht zum Konzept</h2>
-            </div>
-
-            <div class="grid-2">
-                <div style="display: flex; flex-direction: column; justify-content: center;">
-                    <h3>Digital & Interaktiv</h3>
-                    <p>Scannen Sie diesen Code, um die Präsentation interaktiv auf Ihrem Smartphone zu erleben.</p>
-                    
-                    <ul style="margin-top: 20px;">
-                        <li><strong>Papierlos:</strong> Nachhaltig & modern.</li>
-                        <li><strong>Live:</strong> Immer die aktuellste Version.</li>
-                        <li><strong>Helios CI:</strong> 100% Brand Compliant.</li>
-                    </ul>
-
-                    <div class="highlight-box" style="background-color: rgba(0, 158, 179, 0.1); border-left-color: white; color: white;">
-                        <strong>Constantin Paul</strong><br>
-                        <em>"Engagement beginnt mit Erreichbarkeit."</em>
-                    </div>
-                </div>
-
-                <div class="qr-container-dark">
-                    <img src="Helios.png" alt="QR Code" class="qr-code-helios">
-                    <p style="margin-top: 15px; font-size: 14px; color: var(--helios-cyan);">Scan me</p>
-                </div>
-            </div>
-        </div>
-
         <div class="controls">
             <button id="btn-prev" onclick="changeSlide(-1)">&#10094; Zurück</button>
-            <div class="slide-counter"><span id="current-page">1</span> / 10</div>
+            <div class="slide-counter"><span id="current-page">1</span> / 9</div>
             <button id="btn-next" onclick="changeSlide(1)">Weiter &#10095;</button>
         </div>
 
@@ -664,7 +608,7 @@
 
     <script>
         let currentSlide = 1;
-        const totalSlides = 10;
+        const totalSlides = 9;
 
         function updateControls() {
             document.getElementById('btn-prev').disabled = currentSlide === 1;
