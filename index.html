@@ -68,12 +68,26 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* TYPOGRAFIE */
+        /* TYPOGRAFIE & HEADER FIX */
         .slide-header {
             border-bottom: 3px solid var(--helios-cyan);
             padding-bottom: 15px;
             margin-bottom: 25px;
+            
+            /* NEU: Layout-Schutz für das Logo */
+            margin-top: 25px;    /* Schiebt Überschrift generell tiefer */
+            padding-right: 170px; /* Zwingt langen Text zum Umbruch VOR dem Logo */
+            position: relative;
         }
+
+        /* Mobile Anpassung für den Header */
+        @media (max-width: 600px) {
+            .slide-header {
+                padding-right: 0; /* Auf Handy volle Breite nutzen */
+                margin-top: 45px; /* Dafür mehr Abstand nach oben, damit Logo frei steht */
+            }
+        }
+
         h1 {
             color: var(--helios-darkblue);
             font-size: clamp(22px, 5vw, 32px);
@@ -174,12 +188,12 @@
         /* DEKORATION (Logo) */
         .helios-branding {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px; /* Leicht angepasst */
+            right: 20px;
             font-size: 18px;
             font-weight: bold;
             color: var(--helios-darkblue);
-            z-index: 5;
+            z-index: 10; /* Über allem */
         }
         .helios-branding span {
             color: var(--helios-cyan);
@@ -266,6 +280,7 @@
             }
             .controls { display: none !important; }
             .grid-2 { grid-template-columns: 1fr 1fr !important; gap: 40px; }
+            .slide-header { padding-right: 0; margin-top: 0; } /* Reset für Druck */
         }
     </style>
 </head>
