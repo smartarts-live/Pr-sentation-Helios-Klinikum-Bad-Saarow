@@ -2,664 +2,515 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Klinik-Konzept: Constantin Paul</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategie & Impulse | Constantin Paul</title>
     <style>
-        /* HELIOS CI FARBEN & RESET */
         :root {
-            --helios-darkblue: #00324C;
+            --helios-petrol: #004d55;
             --helios-cyan: #009EB3;
-            --helios-lightblue: #E6F7FA;
-            --text-grey: #4A4A4A;
-            --bg-grey: #F5F7F9;
+            --helios-magenta: #E2007A; 
+            --helios-grey: #F5F7F9;
+            --white: #ffffff;
+            --text-dark: #333;
+            --marker-red: rgba(220, 20, 60, 0.6);
+            --paper-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background-color: #555; 
+            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            color: var(--helios-petrol); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
         }
 
-        body {
-            background-color: var(--bg-grey);
-            color: var(--text-grey);
-            overflow-x: hidden;
-            overscroll-behavior-y: none; 
+        /* A4 QUERFORMAT CONTAINER */
+        .page {
+            width: 297mm; 
+            height: 210mm; 
+            background: var(--white);
+            position: relative; 
+            display: none; 
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.6);
         }
+        .page.active { display: block; }
 
-        /* PRÄSENTATIONS-CONTAINER */
-        .presentation-wrapper {
-            background-color: white;
-            min-height: 100vh;
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            padding-bottom: 80px; 
-        }
-
-        /* SLIDE STRUKTUR */
-        .slide {
-            display: none;
-            flex-direction: column;
-            padding: 20px 20px 40px 20px;
-            animation: fadeIn 0.4s ease-in-out;
-            width: 100%;
-        }
-
-        @media (min-width: 769px) {
-            .slide {
-                padding: 40px;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
-        }
-
-        .slide.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* TYPOGRAFIE & HEADER FIX */
-        .slide-header {
+        /* HEADER */
+        .header-bar {
+            height: 18mm;
+            background: var(--white);
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            padding: 0 20mm;
             border-bottom: 3px solid var(--helios-cyan);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-            
-            /* Layout-Schutz für das Logo */
-            margin-top: 25px;    
-            padding-right: 170px; 
-            position: relative;
         }
+        .logo-text { font-size: 22px; font-weight: bold; color: var(--helios-petrol); text-transform: uppercase; letter-spacing: 0.5px; }
+        .logo-text span { color: var(--helios-cyan); }
+        .sub-header { font-size: 14px; color: #888; }
 
-        /* Mobile Anpassung */
-        @media (max-width: 600px) {
-            .slide-header {
-                padding-right: 0; 
-                margin-top: 45px; 
-            }
-        }
+        .content { padding: 15mm 20mm; height: calc(100% - 38mm); position: relative; }
 
-        h1 {
-            color: var(--helios-darkblue);
-            font-size: clamp(22px, 5vw, 32px);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            line-height: 1.2;
-        }
-        h2 {
-            color: var(--helios-cyan);
-            font-size: clamp(16px, 3vw, 20px);
-            font-weight: normal;
-            line-height: 1.3;
-        }
-        h3 {
-            color: var(--helios-darkblue);
-            font-size: 18px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-            margin-top: 15px;
-        }
-        p, li {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-        ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
+        h1 { font-size: 32px; margin-bottom: 5px; color: var(--helios-petrol); text-transform: uppercase; }
+        h2 { font-size: 20px; color: var(--helios-cyan); margin-bottom: 20px; font-weight: normal; }
+        p { font-size: 15px; line-height: 1.5; color: var(--text-dark); margin-bottom: 10px; max-width: 600px; }
+        ul { margin-left: 20px; margin-bottom: 20px; }
+        li { margin-bottom: 8px; font-size: 15px; }
 
-        /* SPALTEN-LAYOUT */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-            width: 100%;
-        }
-
-        @media (min-width: 900px) {
-            .grid-2 {
-                grid-template-columns: 1fr 1fr;
-                gap: 40px;
-            }
-        }
-
-        .highlight-box {
-            background-color: var(--helios-lightblue);
-            padding: 15px;
-            border-left: 5px solid var(--helios-cyan);
-            border-radius: 0 5px 5px 0;
-            margin-bottom: 15px;
-        }
-
-        /* STYLE FÜR DIE SVG BILDER */
-        .comic-img-container {
-            text-align: center;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .comic-svg {
-            width: 100%;
-            max-width: 220px; 
-            height: auto;
-            max-height: 160px;
-        }
-        .svg-line {
-            fill: none;
-            stroke: var(--helios-darkblue);
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-        .svg-accent {
-            fill: var(--helios-cyan);
-            stroke: none;
-            opacity: 0.8;
-        }
-        .svg-fill-white {
-            fill: white;
-            stroke: var(--helios-darkblue);
-            stroke-width: 3;
-        }
-
-        @media (min-width: 900px) {
-             .comic-img-container {
-                 justify-content: flex-end; 
-             }
-             #slide-1 .comic-img-container, 
-             #slide-9 .comic-img-container {
-                 justify-content: center;
-             }
-        }
-
-        /* DEKORATION (Logo) */
-        .helios-branding {
+        /* --- DER 12-MONATS-KALENDER (HOCHKANT) --- */
+        .calendar-trigger {
             position: absolute;
-            top: 20px; 
-            right: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--helios-darkblue);
-            z-index: 10; 
+            right: 80px;
+            top: 15%;
+            width: 140px; 
+            height: 240px;
+            z-index: 100;
+            cursor: pointer;
+            perspective: 1000px;
         }
-        .helios-branding span {
-            color: var(--helios-cyan);
+
+        .cal-card {
+            width: 100%; height: 100%;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 8px;
+            border: 1px solid #ddd;
+            transition: transform 0.4s ease;
+            position: relative;
+            display: flex; flex-direction: column;
         }
+
+        .calendar-trigger:hover .cal-card {
+            transform: rotateY(-15deg) rotateX(5deg) scale(1.05) translateX(-20px);
+            box-shadow: -15px 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .cal-header-top { 
+            text-align: center; border-bottom: 2px solid var(--helios-petrol); 
+            padding-bottom: 4px; margin-bottom: 6px;
+        }
+        .cal-year { font-size: 16px; font-weight: bold; color: var(--helios-cyan); letter-spacing: 2px; }
+
+        .cal-year-grid {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            grid-template-rows: repeat(4, 1fr);
+            gap: 4px; 
+            flex: 1;
+        }
+        
+        .cal-month-box { 
+            border: 0.5px solid #eee; 
+            padding: 2px; 
+            position: relative; 
+            display: flex; flex-direction: column;
+        }
+        
+        .cal-month-name { 
+            font-size: 5px; font-weight: bold; 
+            color: #555; text-align: center; 
+            background: #f4f4f4; margin-bottom: 1px; 
+        }
+
+        .greeking-lines {
+            display: flex; flex-direction: column; gap: 1px; padding: 1px;
+        }
+        .g-line { height: 1px; background: #ddd; width: 100%; margin-bottom: 1px; }
+        .g-line:nth-child(even) { width: 80%; }
+        
+        .mark-circle {
+            position: absolute; width: 10px; height: 10px;
+            border: 1px solid red; border-radius: 50%;
+            background: var(--marker-red);
+            z-index: 10;
+        }
+
+        .hover-msg {
+            position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);
+            background: var(--helios-petrol); color: white; padding: 6px 12px; 
+            border-radius: 20px; font-size: 11px; opacity: 0; transition: 0.3s;
+            pointer-events: none; white-space: nowrap;
+        }
+        .calendar-trigger:hover .hover-msg { opacity: 1; bottom: -50px; }
+
+        /* --- DER FLYER STAPEL (FAN OUT) --- */
+        .fan-stack {
+            position: absolute; right: 140px; top: 50px; width: 0; height: 0;
+            z-index: 50; transition: 0.5s ease-out;
+        }
+
+        .calendar-trigger:hover ~ .fan-stack .doc1 { transform: translate(-280px, 20px) rotate(-15deg); opacity: 1; }
+        .calendar-trigger:hover ~ .fan-stack .doc2 { transform: translate(-160px, -40px) rotate(-5deg); opacity: 1; }
+        .calendar-trigger:hover ~ .fan-stack .doc3 { transform: translate(-360px, -80px) rotate(-25deg); opacity: 1; }
+        
+        .fanned-doc {
+            width: 170px; height: 240px; 
+            background: white; 
+            position: absolute; top: 0; right: 0;
+            box-shadow: var(--paper-shadow);
+            border-radius: 2px;
+            overflow: hidden;
+            display: flex; flex-direction: column;
+            transform-origin: center right;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0; pointer-events: none;
+        }
+
+        .flyer-head { height: 35px; background: white; border-bottom: 2px solid var(--helios-cyan); display: flex; align-items: center; padding: 0 10px; }
+        .flyer-brand { font-size: 8px; font-weight: bold; text-transform: uppercase; color: var(--helios-petrol); }
+        
+        .flyer-visual { height: 80px; background: #eee; position: relative; overflow: hidden; }
+        .flyer-visual div { width: 100%; height: 100%; opacity: 0.7; }
+        .flyer-curve { position: absolute; bottom: 0; width: 100%; height: 12px; background: white; border-radius: 50% 50% 0 0; margin-bottom: -6px; }
+
+        .flyer-content { padding: 10px; flex: 1; background: white; }
+        .flyer-h1 { font-size: 12px; font-weight: bold; color: var(--helios-petrol); line-height: 1.1; margin-bottom: 4px; text-transform: uppercase; }
+        .flyer-h2 { font-size: 9px; font-weight: bold; color: var(--helios-cyan); margin-bottom: 8px; }
+        .flyer-text { font-size: 7px; color: #555; line-height: 1.4; }
+
+        .flyer-foot { height: 20px; background: var(--helios-petrol); display: flex; align-items: center; justify-content: center; color: white; font-size: 6px; }
+
+        .doc-pr .flyer-visual { display: none; }
+        .doc-pr .flyer-head { border-bottom: none; justify-content: space-between; padding-top: 15px; height: auto; }
+        .doc-pr .flyer-content { padding-top: 5px; }
+        .doc-pr .flyer-h1 { font-size: 10px; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; }
+        .doc-pr .flyer-text { font-family: 'Times New Roman', serif; font-size: 8px; text-align: justify; }
+
+        .theme-magenta .flyer-h2 { color: var(--helios-magenta); }
+        .theme-magenta .flyer-head { border-bottom-color: var(--helios-magenta); }
+        .theme-magenta .flyer-foot { background: var(--helios-magenta); }
 
         /* NAVIGATION */
-        .controls {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-top: 1px solid #ccc;
-            padding: 12px 20px;
-            padding-bottom: env(safe-area-inset-bottom, 12px); 
+        .nav-bar { 
+            position: absolute; bottom: 0; width: 100%; 
+            height: 20mm; background: var(--helios-grey); 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0 20mm; border-top: 1px solid #ddd; 
+        }
+        button { 
+            padding: 10px 25px; border: none; border-radius: 50px; 
+            background: var(--helios-cyan); color: white; 
+            font-weight: bold; font-size: 14px; cursor: pointer; 
+            transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button:hover { background: var(--helios-petrol); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        
+        .page-counter { font-size: 14px; color: #888; font-weight: bold; }
+
+        /* CONTACT LAYOUT */
+        .contact-box {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            gap: 30px;
+            margin-top: 40px;
+            padding: 30px;
+            background: var(--helios-grey);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--helios-cyan);
+        }
+        .contact-details { text-align: left; }
+        .contact-name { font-size: 24px; font-weight: bold; color: var(--helios-petrol); margin-bottom: 5px; }
+        .contact-info { font-size: 16px; color: #555; margin-bottom: 5px; }
+        
+        /* QR Code Styling */
+        .qr-code {
+            width: 120px; height: 120px;
+            border-radius: 8px;
+            border: 2px solid var(--helios-cyan);
+            padding: 5px;
+            background: white;
         }
 
-        .slide-counter {
-            font-size: 14px;
-            color: #666;
-            font-weight: bold;
-        }
-        button {
-            background-color: var(--helios-darkblue);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 4px;
-            min-width: 100px;
-            touch-action: manipulation;
-        }
-        button:active {
-            transform: scale(0.98);
-        }
-        button:disabled {
-            background-color: #ddd;
-            color: #999;
-        }
-
-        /* TITEL-SLIDE */
-        .title-slide {
-            justify-content: center;
-            text-align: center;
-            min-height: 80vh; 
-        }
-        .title-slide h1 {
-            font-size: clamp(32px, 8vw, 56px);
-            margin-bottom: 15px;
-        }
-        .title-slide .accent {
-            width: 80px;
-            height: 5px;
-            background-color: var(--helios-cyan);
-            margin: 30px auto;
-        }
-
-        /* DRUCK-EINSTELLUNGEN */
+        /* DRUCK FIX */
         @media print {
-            @page {
-                size: A4 landscape;
-                margin: 0;
-            }
-            body { background: white; overflow: visible; }
-            .presentation-wrapper {
-                display: block;
-                width: 297mm; height: 210mm;
-                padding-bottom: 0;
-                box-shadow: none;
-            }
-            .slide {
-                display: flex !important;
-                page-break-after: always;
-                height: 210mm; width: 297mm;
-                padding: 20mm !important;
-                opacity: 1 !important;
-                transform: none !important;
-            }
-            .controls { display: none !important; }
-            .grid-2 { grid-template-columns: 1fr 1fr !important; gap: 40px; }
-            .slide-header { padding-right: 0; margin-top: 0; }
+            body { display: block; background: none; }
+            .page { display: block !important; width: 100%; height: 100%; margin: 0; box-shadow: none; page-break-after: always; }
+            .nav-bar, .calendar-trigger, .fan-stack { display: none !important; }
+            .page:last-child { page-break-after: auto; }
         }
     </style>
 </head>
 <body>
 
-    <div class="presentation-wrapper">
-
-        <div class="slide active title-slide" id="slide-1">
-            <h1>Community & Experience</h1>
-            <h2>Engagement-Konzept für Bad Saarow</h2>
-            
-            <div class="comic-img-container" style="margin: 30px 0;">
-                <svg class="comic-svg" viewBox="0 0 200 150">
-                    <path d="M100 130 C 20 80, 20 20, 100 50 C 180 20, 180 80, 100 130" class="svg-accent" fill="#009EB3" opacity="0.3"/>
-                    <circle cx="70" cy="50" r="15" class="svg-line" />
-                    <line x1="70" y1="65" x2="70" y2="110" class="svg-line" />
-                    <line x1="70" y1="110" x2="55" y2="140" class="svg-line" />
-                    <line x1="70" y1="110" x2="85" y2="140" class="svg-line" />
-                    <line x1="70" y1="80" x2="95" y2="80" class="svg-line" /> 
-                    <circle cx="130" cy="50" r="15" class="svg-line" />
-                    <line x1="130" y1="65" x2="130" y2="110" class="svg-line" />
-                    <line x1="130" y1="110" x2="115" y2="140" class="svg-line" />
-                    <line x1="130" y1="110" x2="145" y2="140" class="svg-line" />
-                    <line x1="130" y1="80" x2="105" y2="80" class="svg-line" /> 
-                </svg>
-            </div>
-
-            <div class="accent"></div>
-            <div class="meta-info">
-                <strong>Referent:</strong> Constantin Paul<br>
-                <strong>Fokus:</strong> Verbindung & Effizienz<br>
-                <strong>Mission:</strong> Zusammenhalt stärken
-            </div>
+    <div class="page active" id="p1">
+        <div class="header-bar">
+            <div class="logo-text">Helios <span>Gesundheit</span></div>
+            <div class="sub-header">Constantin Paul | Bad Saarow</div>
         </div>
-        <div class="slide" id="slide-2">
-            <div class="helios-branding">Helios<span>Gesundheit</span></div>
-            <div class="slide-header">
-                <h1>Die Klinik-Realität</h1>
-                <h2>Gemeinsam Bedürfnisse ermitteln</h2>
+        <div class="content">
+            <div style="background: var(--helios-grey); padding: 40px; border-radius: 0 40px 40px 0; border-left: 8px solid var(--helios-cyan); margin-top: 30px; max-width: 80%;">
+                <h1 style="margin: 0 0 10px 0;">Strategische Synergie</h1>
+                <p style="font-size: 20px; color: var(--helios-cyan); margin: 0;">Employee Engagement als Motor für das Standortmarketing</p>
             </div>
-            <div class="grid-2">
-                <div>
-                    <h3>Der Status Quo</h3>
-                    <p>Medizinisches Personal ist resilient und professionell. Mein Ziel ist es, genau zu verstehen, was die Teams im Alltag wirklich bewegt.</p>
-                    <ul>
-                        <li><strong>Zusammenhalt:</strong> Wie überwinden wir Silo-Denken zwischen den Berufsgruppen?</li>
-                        <li><strong>Lifestyle:</strong> Wie unterstützen wir das Lebensmodell "Schichtdienst" optimal?</li>
-                        <li><strong>Kultur:</strong> Wo wünschen sich die Teams mehr Austausch und Gemeinschaft?</li>
-                    </ul>
-                </div>
-                <div>
-                    <div class="comic-img-container">
-                        <svg class="comic-svg" viewBox="0 0 200 150">
-                            <path d="M10 120 Q 50 100, 80 120" class="svg-line" />
-                            <path d="M120 120 Q 150 100, 190 120" class="svg-line" />
-                            <path d="M80 120 Q 100 80, 120 120" class="svg-line" stroke-dasharray="5,5" />
-                            <rect x="90" y="90" width="20" height="10" class="svg-accent" />
-                            <circle cx="70" cy="90" r="10" class="svg-line" />
-                            <line x1="70" y1="100" x2="70" y2="120" class="svg-line" />
-                            <circle cx="130" cy="90" r="10" class="svg-line" />
-                            <line x1="130" y1="100" x2="130" y2="120" class="svg-line" />
-                        </svg>
-                    </div>
-                    <h3>Der Ansatz</h3>
-                    <div class="highlight-box">
-                        <strong>Verbindung schaffen</strong>
-                    </div>
-                    <p>Es geht nicht darum, Profis zu "therapieren", sondern Räume zu schaffen (Events & Kultur), in denen Erfolge gefeiert werden und echter Austausch stattfindet.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" id="slide-3">
-            <div class="helios-branding">Helios<span>Gesundheit</span></div>
-            <div class="slide-header">
-                <h1>1. Die "Campus-Visite"</h1>
-                <h2>Zuhören & Erfolge sichtbar machen</h2>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <h3>Der ganzheitliche Ansatz</h3>
-                    <p>Eine regelmäßige Präsenz auf den Stationen ist essenziell. Dabei verfolge ich zwei Ziele gleichzeitig:</p>
-                    
-                    <h3>A) Ehrliche Reflexion ("Kiesel im Schuh")</h3>
-                    <ul>
-                        <li>Wo hakt es im Alltag?</li>
-                        <li>Welche kleinen Hindernisse können wir aus dem Weg räumen?</li>
-                    </ul>
-
-                    <h3>B) Story Scouting (Erfolge feiern)</h3>
-                    <ul>
-                        <li>Was lief diese Woche besonders gut?</li>
-                        <li>Welche "Stillen Helden" haben Anerkennung verdient?</li>
-                    </ul>
-                </div>
-                <div>
-                     <div class="comic-img-container">
-                        <svg class="comic-svg" viewBox="0 0 200 150">
-                            <circle cx="150" cy="40" r="12" class="svg-line" />
-                            <line x1="150" y1="52" x2="150" y2="100" class="svg-line" />
-                            <line x1="150" y1="100" x2="135" y2="130" class="svg-line" />
-                            <line x1="150" y1="100" x2="165" y2="130" class="svg-line" />
-                            <rect x="130" y="60" width="20" height="30" class="svg-fill-white" /> 
-                            <path d="M40 30 Q 100 30, 100 60 Q 100 90, 70 90 L 50 110 L 50 90 Q 20 90, 20 60 Q 20 30, 40 30" class="svg-line" />
-                            <path d="M60 45 L 65 60 L 80 60 L 68 70 L 73 85 L 60 75 L 47 85 L 52 70 L 40 60 L 55 60 Z" class="svg-accent" fill="#009EB3" />
-                        </svg>
-                    </div>
-                    <h3>Umsetzung Bad Saarow</h3>
-                    <div class="highlight-box">
-                        <strong>Balance halten</strong>
-                    </div>
-                    <p>Ich bin Ansprechpartner für beides: Für das offene Ohr bei Problemen, aber vor allem auch als Verstärker für die positiven Geschichten, die im Klinikalltag oft untergehen.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" id="slide-4">
-            <div class="helios-branding">Helios<span>Gesundheit</span></div>
-            <div class="slide-header">
-                <h1>2. Quality Break</h1>
-                <h2>Ressourcen strategisch nutzen</h2>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <h3>Konzeptentwicklung</h3>
-                    <p>Wer Schicht arbeitet, braucht passgenaue Angebote – ohne Extrakosten, sondern durch smarte Planung.</p>
-                    <ul>
-                        <li><strong>Versorgungs-Check:</strong> Wie können wir bestehende Budgets (Kantine) flexibler für den Nachtdienst einsetzen?</li>
-                        <li><strong>Prozess-Analyse:</strong> Wann brauchen Teams Energie? (Datenbasierte Planung).</li>
-                    </ul>
-                </div>
-                <div>
-                     <div class="comic-img-container">
-                        <svg class="comic-svg" viewBox="0 0 200 150">
-                            <path d="M50 80 L 50 120 Q 50 140, 90 140 Q 130 140, 130 120 L 130 80 Z" class="svg-fill-white" />
-                            <path d="M130 90 Q 150 90, 150 110 Q 150 130, 130 130" class="svg-line" /> 
-                            <path d="M70 60 Q 80 40, 70 20" class="svg-accent" style="stroke-width: 3; fill:none;" />
-                            <path d="M90 60 Q 100 40, 90 20" class="svg-accent" style="stroke-width: 3; fill:none;" />
-                            <path d="M110 60 Q 120 40, 110 20" class="svg-accent" style="stroke-width: 3; fill:none;" />
-                            <path d="M90 100 L 80 110 L 95 110 L 90 125 L 105 110 L 90 110 L 100 100 Z" fill="#009EB3" />
-                        </svg>
-                    </div>
-                    <h3>Raum-Analyse</h3>
-                    <div class="highlight-box">
-                        <strong>Nutzung vor Umbau</strong>
-                    </div>
-                    <p>Prüfung der Pausenräume auf Funktionalität und Atmosphäre. Oft reichen kleine Anpassungen (Licht/Ordnung), um echte Rückzugsorte zu schaffen.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" id="slide-5">
-            <div class="helios-branding">Helios<span>Gesundheit</span></div>
-            <div class="slide-header">
-                <h1>3. Events & Wertschätzung</h1>
-                <h2>Verbindung schaffen & Expertise nutzen</h2>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <h3>Proven Track Record</h3>
-                    <p>Meine Erfahrung im Veranstaltungsmanagement der Hotellerie & Golf-Branche garantiert professionelle Abläufe.</p>
-                    
-                    <h4>Erfahrungsschatz (Hotel/Golf):</h4>
-                    <ul>
-                        <li><strong>Intern:</strong> Silvester-Galas, Oktoberfest, Kurs-Programme.</li>
-                        <li><strong>Extern/B2B:</strong> Groß-Events für Total Energies, Zattoo TV etc.</li>
-                    </ul>
-                    <div class="highlight-box">
-                        <strong>Skill-Match für Helios:</strong><br>
-                        "Komplexe Event-Planung ist meine Muttersprache."
-                    </div>
-                </div>
-                <div>
-                    <h3>Ready for Helios</h3>
-                    <p>Ich übersetze diese Expertise direkt auf Ihren Bedarf (Mitarbeiterfest, Symposien, Patiententage).</p>
-
-                    <h4>Mein Regional-Turbo:</h4>
-                    <p>Volle Verankerung in Bad Saarow bedeutet direkten Zugriff auf Ressourcen ohne Kaltakquise:</p>
-                    <ul>
-                        <li><strong>Exklusive Partner:</strong> Kooperationen (z.B. lokale Premium-Hotellerie & Zulieferer).</li>
-                        <li><strong>Incentives:</strong> Sponsoren für Tombola/Preise aus dem direkten Netzwerk.</li>
-                    </ul>
-                </div>
-            </div>
-             <div class="comic-img-container" style="position:absolute; bottom:20px; right:20px; opacity:0.6; transform: scale(0.7);">
-                <svg class="comic-svg" viewBox="0 0 200 150">
-                    <path d="M60 140 L 80 90 L 70 50 L 85 50 L 90 80" class="svg-line" />
-                    <path d="M70 50 L 60 55" class="svg-line" /> 
-                    <path d="M140 140 L 120 90 L 130 50 L 115 50 L 110 80" class="svg-line" />
-                    <path d="M130 50 L 140 55" class="svg-line" /> 
-                    <path d="M100 30 L 100 60" class="svg-accent" style="stroke-width: 2" />
-                    <circle cx="100" cy="45" r="15" fill="none" stroke="#009EB3" stroke-width="2" />
-                </svg>
-            </div>
-        </div>
-
-        <div class="slide" id="slide-6">
-            <div class="helios-branding">Helios<span>Gesundheit</span></div>
-            <div class="slide-header">
-                <h1>4. Onboarding & Integration</h1>
-                <h2>Der "Welcome Service"</h2>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <h3>Der erste Tag entscheidet</h3>
-                    <p>Wer neu kommt, muss sofort Teil der Community werden.</p>
-                    <ul>
-                        <li><strong>Netzwerk:</strong> Paten-System, das über die eigene Station hinausgeht.</li>
-                        <li><strong>Klinik-Guide:</strong> Wo ist was? Wer hilft bei IT? (Orientierung statt Bürokratie).</li>
-                    </ul>
-                </div>
-                <div>
-                     <div class="comic-img-container">
-                        <svg class="comic-svg" viewBox="0 0 200 150">
-                            <rect x="50" y="20" width="80" height="130" class="svg-line" stroke-dasharray="5,5" />
-                            <path d="M50 20 L 20 10 L 20 140 L 50 150 Z" class="svg-fill-white" />
-                            <circle cx="90" cy="60" r="12" class="svg-line" />
-                            <line x1="90" y1="72" x2="90" y2="120" class="svg-line" />
-                            <line x1="90" y1="80" x2="120" y2="50" class="svg-line" /> 
-                            <line x1="120" y1="50" x2="130" y2="60" class="svg-line" /> 
-                        </svg>
-                    </div>
-                    <h3>Constantins Ansatz</h3>
-                    <div class="highlight-box">
-                        <strong>Hospitality Mindset</strong>
-                    </div>
-                    <p>Behandlung neuer Kollegen wie VIP-Gäste. Ein perfekter Start sorgt für langfristige Bindung.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" id="slide-7">
-            <div class="helios-branding">Helios<span>Gesundheit</span></div>
-            <div class="slide-header">
-                <h1>Digitales Engagement & Effizienz</h1>
-                <h2>Datenkompetenz trifft Empathie</h2>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <h3>Tech-Stack & Hard Skills</h3>
-                    <p>Ich gestalte die digitale Welt von heute, statt nur Events zu planen. Mein USP gegen rein analoge Ansätze:</p>
-                    <ul>
-                        <li><strong>Datenbanken (PostgreSQL/SQL):</strong> Tiefgehende Analyse von Mitarbeiterdaten statt oberflächlicher Excel-Listen.</li>
-                        <li><strong>KI-Automatisierung:</strong> Routine-Aufgaben (z.B. Einladungsmanagement, Feedback-Auswertung) automatisieren, um Zeit für den Menschen zu gewinnen.</li>
-                        <li><strong>Web-Dev:</strong> Verständnis für digitale Schnittstellen und moderne Tools.</li>
-                    </ul>
-                </div>
-                <div>
-                     <div class="comic-img-container">
-                        <svg class="comic-svg" viewBox="0 0 200 150">
-                            <line x1="20" y1="20" x2="20" y2="130" class="svg-line" />
-                            <line x1="20" y1="130" x2="180" y2="130" class="svg-line" />
-                            <rect x="40" y="90" width="20" height="40" fill="#ddd" />
-                            <rect x="80" y="70" width="20" height="60" fill="#ddd" />
-                            <rect x="120" y="40" width="20" height="90" class="svg-accent" />
-                            <path d="M40 80 L 140 30" class="svg-line" stroke="#009EB3" stroke-width="4" />
-                            <path d="M130 30 L 140 30 L 140 45" class="svg-line" stroke="#009EB3" fill="none" />
-                        </svg>
-                    </div>
-                    <h3>Helios Puls Turbo</h3>
-                    <div class="highlight-box">
-                        <strong>Der analytische Loop</strong>
-                    </div>
-                    <p><em>Analyse → Maßnahme → Messung.</em></p>
-                    <p>Ich nutze Helios Puls nicht nur als Stimmungsbild, sondern werte gezielt abteilungsspezifisch aus, um operative Engpässe sichtbar zu machen und Lösungen datenbasiert zu validieren.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" id="slide-8">
-            <div class="helios-branding">Helios<span>Gesundheit</span></div>
-            <div class="slide-header">
-                <h1>Die ersten 100 Tage</h1>
-                <h2>Implementierungs-Plan</h2>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <h3>Phase 1: Verstehen (Tag 1-30)</h3>
-                    <ul>
-                        <li>Vorstellung in allen Teams.</li>
-                        <li>Hospitation: Einen Tag "mitlaufen" in Pflege & Küche (Präsenz zeigen).</li>
-                    </ul>
-                    
-                    <h3>Phase 2: Sichtbarkeit (Tag 31-60)</h3>
-                    <ul>
-                        <li>Erstes kleines "Connector-Event" (z.B. Coffee-Bike auf dem Campus).</li>
-                        <li>Planungsstart für Groß-Events (Neujahrsempfang) unter Nutzung des regionalen Netzwerks.</li>
-                    </ul>
-                </div>
-                <div>
-                     <div class="comic-img-container" style="justify-content: center; margin-bottom: 10px;">
-                        <svg class="comic-svg" viewBox="0 0 200 120" style="max-height: 120px;">
-                            <path d="M20 100 Q 60 100, 80 70 T 140 40 T 180 10" class="svg-line" stroke-dasharray="8,4" />
-                            <line x1="80" y1="70" x2="80" y2="40" class="svg-line" />
-                            <path d="M80 40 L 100 50 L 80 60 Z" class="svg-accent" />
-                            <line x1="180" y1="10" x2="180" y2="-20" class="svg-line" />
-                            <path d="M180 -20 L 200 -10 L 180 0 Z" class="svg-accent" />
-                            <circle cx="40" cy="80" r="10" class="svg-line" />
-                            <line x1="40" y1="90" x2="40" y2="105" class="svg-line" />
-                        </svg>
-                    </div>
-                    <h3>Phase 3: Struktur (Tag 61-90)</h3>
-                    <ul>
-                        <li>Jahreskalender für Events & Aktionen finalisieren.</li>
-                        <li>Etablierung der regelmäßigen "Campus-Präsenz".</li>
-                    </ul>
-                    <div class="highlight-box">
-                        <strong>Ziel nach 100 Tagen:</strong><br>
-                        Jeder kennt mich als den, der das Team zusammenbringt.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" id="slide-9">
-            <div class="helios-branding">Helios<span>Gesundheit</span></div>
-            <div class="slide-header">
-                <h1>Fazit</h1>
-                <h2>Starke Teams = Starke Klinik</h2>
-            </div>
-            
-             <div class="comic-img-container" style="margin: 40px 0;">
-                <svg class="comic-svg" viewBox="0 0 200 100">
-                    <circle cx="70" cy="40" r="15" class="svg-line" />
-                    <path d="M60 50 Q 70 60, 80 50" class="svg-line" fill="none" /> 
-                    <circle cx="100" cy="30" r="15" class="svg-line" />
-                    <path d="M90 40 Q 100 50, 110 40" class="svg-line" fill="none" /> 
-                    <circle cx="130" cy="40" r="15" class="svg-line" />
-                    <path d="M120 50 Q 130 60, 140 50" class="svg-line" fill="none" /> 
-                    <line x1="50" y1="50" x2="40" y2="30" class="svg-line" />
-                    <line x1="150" y1="50" x2="160" y2="30" class="svg-line" />
-                </svg>
-            </div>
-
-            <div style="text-align: center;">
-                <h3>Constantin Paul</h3>
-                <p>Kandidat Employee Engagement Management</p>
+            <div style="margin-top: 40px; max-width: 680px;">
+                <p>Nach unserem Gespräch hat sich mein Bild der Position geschärft. Ich sehe Engagement nicht als interne Insellösung, sondern als Startpunkt für die Außenwirkung.</p>
                 <br>
-                <p><em>"Ich bringe die Service-Exzellenz der Hotellerie in die Community des Klinikums."</em></p>
+                <p><strong>Mein Ansatz:</strong> Zufriedene Mitarbeiter sind unsere besten Markenbotschafter. Ich nutze meine Rolle, um interne Highlights so professionell aufzubereiten, dass sie <strong>automatisch auch als Standortmarketing</strong> funktionieren. So stärken wir Bad Saarow aus der Mitte heraus – effizient, lokal und im perfekten Einklang mit dem Cluster.</p>
             </div>
         </div>
+        <div class="nav-bar"><span></span><div class="page-counter">1 / 5</div><button onclick="next(2)">Zu den Impulsen &#10095;</button></div>
+    </div>
 
-        <div class="controls">
-            <button id="btn-prev" onclick="changeSlide(-1)">&#10094; Zurück</button>
-            <div class="slide-counter"><span id="current-page">1</span> / 9</div>
-            <button id="btn-next" onclick="changeSlide(1)">Weiter &#10095;</button>
+    <div class="page" id="p2">
+        <div class="header-bar">
+            <div class="logo-text">Events <span>Extern</span></div>
+            <div class="sub-header">Patienten & Zuweiser</div>
         </div>
+        <div class="content">
+            <h1>Medizin erlebbar machen</h1>
+            <h2>Symposien & Tage der offenen Tür</h2>
+            <p>Veranstaltungen wie das <strong>Mammasymposium</strong> oder der <strong>Tag der offenen Tür</strong> erfordern eine präzise Außenwirkung. Ich unterstütze bei der Erstellung von fachspezifischen Materialien und der Organisation vor Ort.</p>
+            
+            <ul style="margin-top: 30px;">
+                <li><strong>Ziel:</strong> Professioneller Auftritt für Zuweiser & niederschwelliger Zugang für Patienten.</li>
+                <li><strong>Support:</strong> Layout-Zuarbeit (Flyer) und Event-Logistik.</li>
+            </ul>
 
+            <div class="calendar-trigger">
+                <div class="hover-msg">Termine anzeigen</div>
+                <div class="cal-card">
+                    <div class="cal-header-top"><div class="cal-year">2026</div></div>
+                    <div class="cal-year-grid">
+                        <div class="cal-month-box"><div class="cal-month-name">JAN</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">FEB</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">MRZ</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">APR</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">MAI</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">JUN</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="top: 8px; left: 8px;"></div> </div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">JUL</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="bottom: 4px; right: 4px;"></div> </div>
+                        <div class="cal-month-box"><div class="cal-month-name">AUG</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">SEP</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">OKT</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">NOV</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">DEZ</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fan-stack">
+                <div class="fanned-doc doc1 theme-magenta">
+                    <div class="flyer-head"><div class="flyer-brand">Senologie</div></div>
+                    <div class="flyer-visual" style="background:#ffeef5;">
+                        <div style="background:var(--helios-magenta); width:100%; height:100%; clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%); opacity:0.2;"></div>
+                        <div class="flyer-curve"></div>
+                    </div>
+                    <div class="flyer-content">
+                        <div class="flyer-h1">XXIX. Mamma-<br>symposium</div>
+                        <div class="flyer-h2">Fortgeschrittenes Karzinom</div>
+                        <div class="flyer-text"><strong>25. Juni 2026</strong><br>Konferenzraum "Theodor Fontane".<br>Zertifizierte Fortbildung.</div>
+                    </div>
+                    <div class="flyer-foot">Für medizinisches Fachpersonal</div>
+                </div>
+                <div class="fanned-doc doc2">
+                    <div class="flyer-head"><div class="flyer-brand">Helios</div></div>
+                    <div class="flyer-visual" style="background:#dbeef5;">
+                         <div class="flyer-curve"></div>
+                    </div>
+                    <div class="flyer-content">
+                        <div class="flyer-h1">Klinikum<br>Hautnah</div>
+                        <div class="flyer-h2">Tag der offenen Tür</div>
+                        <div class="flyer-text"><strong>04. Juli 2026</strong><br>Blick hinter die Kulissen.<br>Programm für die ganze Familie.</div>
+                    </div>
+                    <div class="flyer-foot">Eintritt Frei</div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-bar"><button onclick="next(1)">&#10094; Zurück</button><div class="page-counter">2 / 5</div><button onclick="next(3)">Weiter &#10095;</button></div>
+    </div>
+
+    <div class="page" id="p3">
+        <div class="header-bar">
+            <div class="logo-text">Kommunikation <span>PR</span></div>
+            <div class="sub-header">Medien & Öffentlichkeit</div>
+        </div>
+        <div class="content">
+            <h1>Nachrichten steuern</h1>
+            <h2>Pressemitteilungen & Zuarbeit</h2>
+            <p>Die Eröffnung der <strong>Klinik für Nephrologie</strong> oder medizinische Meilensteine brauchen klare Worte. Ich liefere der Cluster-PR gut recherchierte Rohdaten und Textentwürfe.</p>
+
+             <div class="calendar-trigger">
+                <div class="hover-msg">PR-Planung öffnen</div>
+                <div class="cal-card">
+                    <div class="cal-header-top"><div class="cal-year">2026</div></div>
+                    <div class="cal-year-grid">
+                        <div class="cal-month-box"><div class="cal-month-name">JAN</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">FEB</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">MRZ</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="bottom: 3px; left: 3px;"></div>
+                        </div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">APR</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="top: 5px; right: 5px;"></div>
+                        </div>
+                        <div class="cal-month-box"><div class="cal-month-name">MAI</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">JUN</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">JUL</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">AUG</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">SEP</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">OKT</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">NOV</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">DEZ</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fan-stack">
+                <div class="fanned-doc doc1 doc-pr">
+                    <div class="flyer-head">
+                        <div class="flyer-brand" style="font-size:10px;">Pressemitteilung</div>
+                        <div style="font-size:6px;">18.02.2026</div>
+                    </div>
+                    <div class="flyer-content">
+                        <div class="flyer-h1">Erweiterung des Spektrums:<br>Neue Klinik für Nephrologie</div>
+                        <div class="flyer-text">
+                            <strong>Bad Saarow.</strong> Am 01. April 2026 eröffnet das Helios Klinikum Bad Saarow die neue Klinik für Nephrologie, Infektiologie und Antibiotic Stewardship.<br><br>
+                            "Mit diesem Schritt schließen wir eine wichtige Versorgungslücke in der Region", so Klinikgeschäftsführerin Carmen Bier. Die interdisziplinäre Zusammenarbeit...
+                        </div>
+                    </div>
+                    <div class="flyer-foot">Pressekontakt Cluster BB</div>
+                </div>
+                <div class="fanned-doc doc2 doc-pr">
+                    <div class="flyer-head">
+                        <div class="flyer-brand">Interview-Briefing</div>
+                    </div>
+                    <div class="flyer-content">
+                        <div class="flyer-h1">Hintergrundgespräch:<br>Chefarzt Prof. Zaatar</div>
+                        <div class="flyer-text" style="font-family: Arial, sans-serif;">
+                            <strong>Thema:</strong> Berufung zur W2-Professur.<br>
+                            <strong>Zielmedium:</strong> Lokalpresse & Ärzteblatt.<br>
+                            <strong>Kernbotschaft:</strong> Verbindung von Forschung und Lehre mit exzellenter Patientenversorgung in Zehlendorf.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-bar"><button onclick="next(2)">&#10094; Zurück</button><div class="page-counter">3 / 5</div><button onclick="next(4)">Weiter &#10095;</button></div>
+    </div>
+
+    <div class="page" id="p4">
+        <div class="header-bar">
+            <div class="logo-text">Events <span>Intern</span></div>
+            <div class="sub-header">Mitarbeiterbindung & Wertschätzung</div>
+        </div>
+        <div class="content">
+            <h1>Wir-Gefühl stärken</h1>
+            <h2>Kleine Gesten & Große Feste</h2>
+            <p>Mitarbeiterbindung entsteht durch Aufmerksamkeit. Ob beim großen <strong>Sommerfest</strong> oder durch kleine Gesten am <strong>Frauentag</strong> oder <strong>Tag der Pflege</strong>.</p>
+            
+            <ul style="margin-top: 20px;">
+                <li><strong>Konzept:</strong> Emotionale Highlights im Arbeitsalltag setzen.</li>
+                <li><strong>Umsetzung:</strong> Organisation der Verteilung (z.B. Rosen) und Event-Planung.</li>
+            </ul>
+
+            <div class="calendar-trigger">
+                <div class="hover-msg">Mitarbeiter-Aktionen</div>
+                <div class="cal-card">
+                    <div class="cal-header-top"><div class="cal-year">2026</div></div>
+                    <div class="cal-year-grid">
+                        <div class="cal-month-box"><div class="cal-month-name">JAN</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">FEB</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">MRZ</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="top: 50%; left: 50%; margin-left:-5px; margin-top:-5px;"></div>
+                        </div>
+                        <div class="cal-month-box"><div class="cal-month-name">APR</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">MAI</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="bottom: 3px; left: 3px;"></div>
+                        </div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">JUN</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="top: 3px; right: 3px;"></div>
+                        </div>
+                        <div class="cal-month-box"><div class="cal-month-name">JUL</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">AUG</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">SEP</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">OKT</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">NOV</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">DEZ</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fan-stack">
+                <div class="fanned-doc doc1">
+                    <div class="flyer-head"><div class="flyer-brand">Team Event</div></div>
+                    <div class="flyer-visual" style="background:#ffdd88;">
+                        <div class="flyer-curve"></div>
+                    </div>
+                    <div class="flyer-content">
+                        <div class="flyer-h1">Sommerfest<br>2026</div>
+                        <div class="flyer-h2">19. Juni 2026</div>
+                        <div class="flyer-text">Einladung für alle Mitarbeiter.<br>Drei Standorte - Eine Party.<br>Shuttle-Service inklusive.</div>
+                    </div>
+                    <div class="flyer-foot">Wir freuen uns auf Euch!</div>
+                </div>
+                <div class="fanned-doc doc2 theme-magenta">
+                    <div class="flyer-head"><div class="flyer-brand">Danke</div></div>
+                    <div class="flyer-visual" style="background:#ffccdd;">
+                        <div style="font-size:40px; text-align:center; line-height:80px; color:white; opacity:0.8;">⚘</div>
+                        <div class="flyer-curve"></div>
+                    </div>
+                    <div class="flyer-content">
+                        <div class="flyer-h1">Weltfrauentag<br>08. März</div>
+                        <div class="flyer-h2">Eine Rose für Dich</div>
+                        <div class="flyer-text">Als kleines Zeichen der Wertschätzung für euren unermüdlichen Einsatz.</div>
+                    </div>
+                    <div class="flyer-foot" style="background:var(--helios-magenta)">Helios sagt Danke</div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-bar"><button onclick="next(3)">&#10094; Zurück</button><div class="page-counter">4 / 5</div><button onclick="next(5)">Fazit &#10095;</button></div>
+    </div>
+
+    <div class="page" id="p5">
+        <div class="header-bar">
+            <div class="logo-text">Helios <span>Bad Saarow</span></div>
+        </div>
+        <div class="content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <div style="width: 80px; height: 80px; background: var(--helios-cyan); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; margin-bottom: 20px;">✔</div>
+            <h1>Bereit für die Umsetzung</h1>
+            <p style="font-size: 18px;">Ich freue mich darauf, diese Impulse gemeinsam mit Ihnen zu realisieren.</p>
+            
+            <div class="contact-box">
+                <div class="contact-details">
+                    <div class="contact-name">Constantin Paul</div>
+                    <div class="contact-info">Am Forst 6, 15526 Bad Saarow</div>
+                    <div class="contact-info">Tel: 0152 542 758 24</div>
+                    <div class="contact-info"><a href="mailto:constantin.paul@gmail.com" style="color:var(--helios-cyan); text-decoration:none;">constantin.paul@gmail.com</a></div>
+                </div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=004d55&bgcolor=ffffff&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3APaul%3BConstantin%0AFN%3AConstantin+Paul%0ATEL%3BTYPE%3DCELL%3A015254275824%0AEMAIL%3Aconstantin.paul%40gmail.com%0AADR%3A%3B%3BAm+Forst+6%3BBad+Saarow%3B%3B15526%3BGermany%0AEND%3AVCARD" 
+                     alt="vCard Kontakt" class="qr-code">
+            </div>
+
+        </div>
+        <div class="nav-bar"><button onclick="next(4)">&#10094; Zurück</button><div class="page-counter">5 / 5</div><span></span></div>
     </div>
 
     <script>
-        let currentSlide = 1;
-        const totalSlides = 9;
-
-        function updateControls() {
-            document.getElementById('btn-prev').disabled = currentSlide === 1;
-            document.getElementById('btn-next').disabled = currentSlide === totalSlides;
-            document.getElementById('current-page').innerText = currentSlide;
+        function next(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('p' + id).classList.add('active');
         }
-
-        function changeSlide(direction) {
-            document.getElementById(`slide-${currentSlide}`).classList.remove('active');
-            
-            currentSlide += direction;
-            
-            if (currentSlide < 1) currentSlide = 1;
-            if (currentSlide > totalSlides) currentSlide = totalSlides;
-
-            document.getElementById(`slide-${currentSlide}`).classList.add('active');
-            window.scrollTo(0, 0);
-            updateControls();
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "ArrowLeft") changeSlide(-1);
-            if (event.key === "ArrowRight") changeSlide(1);
-        });
-
-        updateControls();
     </script>
 </body>
 </html>
