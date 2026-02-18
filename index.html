@@ -9,10 +9,11 @@
             --helios-petrol: #004d55;
             --helios-cyan: #009EB3;
             --helios-magenta: #E2007A; 
+            --helios-orange: #FF8800;
             --helios-grey: #F5F7F9;
             --white: #ffffff;
             --text-dark: #333;
-            --marker-red: rgba(220, 20, 60, 0.6);
+            --marker-red: rgba(220, 20, 60, 0.7);
             --paper-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
@@ -58,7 +59,7 @@
 
         h1 { font-size: 32px; margin-bottom: 5px; color: var(--helios-petrol); text-transform: uppercase; }
         h2 { font-size: 20px; color: var(--helios-cyan); margin-bottom: 20px; font-weight: normal; }
-        p { font-size: 15px; line-height: 1.5; color: var(--text-dark); margin-bottom: 10px; max-width: 600px; }
+        p { font-size: 15px; line-height: 1.5; color: var(--text-dark); margin-bottom: 10px; max-width: 650px; }
         ul { margin-left: 20px; margin-bottom: 20px; }
         li { margin-bottom: 8px; font-size: 15px; }
 
@@ -141,13 +142,17 @@
 
         /* --- DER FLYER STAPEL (FAN OUT) --- */
         .fan-stack {
-            position: absolute; right: 140px; top: 50px; width: 0; height: 0;
+            position: absolute; right: 140px; top: 30px; width: 0; height: 0;
             z-index: 50; transition: 0.5s ease-out;
         }
 
-        .calendar-trigger:hover ~ .fan-stack .doc1 { transform: translate(-280px, 20px) rotate(-15deg); opacity: 1; }
-        .calendar-trigger:hover ~ .fan-stack .doc2 { transform: translate(-160px, -40px) rotate(-5deg); opacity: 1; }
-        .calendar-trigger:hover ~ .fan-stack .doc3 { transform: translate(-360px, -80px) rotate(-25deg); opacity: 1; }
+        /* Animation States */
+        .calendar-trigger:hover ~ .fan-stack .doc1 { transform: translate(-280px, 10px) rotate(-15deg); opacity: 1; }
+        .calendar-trigger:hover ~ .fan-stack .doc2 { transform: translate(-220px, -20px) rotate(-8deg); opacity: 1; }
+        .calendar-trigger:hover ~ .fan-stack .doc3 { transform: translate(-160px, -50px) rotate(0deg); opacity: 1; }
+        .calendar-trigger:hover ~ .fan-stack .doc4 { transform: translate(-300px, -80px) rotate(-22deg); opacity: 1; }
+        .calendar-trigger:hover ~ .fan-stack .doc5 { transform: translate(-100px, -10px) rotate(10deg); opacity: 1; }
+        .calendar-trigger:hover ~ .fan-stack .doc6 { transform: translate(-350px, 40px) rotate(-30deg); opacity: 1; }
         
         .fanned-doc {
             width: 170px; height: 240px; 
@@ -176,15 +181,21 @@
 
         .flyer-foot { height: 20px; background: var(--helios-petrol); display: flex; align-items: center; justify-content: center; color: white; font-size: 6px; }
 
+        /* PR STYLE */
         .doc-pr .flyer-visual { display: none; }
         .doc-pr .flyer-head { border-bottom: none; justify-content: space-between; padding-top: 15px; height: auto; }
         .doc-pr .flyer-content { padding-top: 5px; }
         .doc-pr .flyer-h1 { font-size: 10px; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; }
         .doc-pr .flyer-text { font-family: 'Times New Roman', serif; font-size: 8px; text-align: justify; }
 
+        /* THEMES */
         .theme-magenta .flyer-h2 { color: var(--helios-magenta); }
         .theme-magenta .flyer-head { border-bottom-color: var(--helios-magenta); }
         .theme-magenta .flyer-foot { background: var(--helios-magenta); }
+        
+        .theme-orange .flyer-h2 { color: var(--helios-orange); }
+        .theme-orange .flyer-head { border-bottom-color: var(--helios-orange); }
+        .theme-orange .flyer-foot { background: var(--helios-orange); }
 
         /* NAVIGATION */
         .nav-bar { 
@@ -219,21 +230,57 @@
         .contact-name { font-size: 24px; font-weight: bold; color: var(--helios-petrol); margin-bottom: 5px; }
         .contact-info { font-size: 16px; color: #555; margin-bottom: 5px; }
         
-        /* QR Code Styling */
-        .qr-code {
-            width: 120px; height: 120px;
-            border-radius: 8px;
-            border: 2px solid var(--helios-cyan);
-            padding: 5px;
-            background: white;
-        }
+        .qr-code { width: 120px; height: 120px; border-radius: 8px; border: 2px solid var(--helios-cyan); padding: 5px; background: white; }
 
-        /* DRUCK FIX */
+        /* --- DRUCK OPTIMIERUNG (DER NEUE PART) --- */
         @media print {
-            body { display: block; background: none; }
-            .page { display: block !important; width: 100%; height: 100%; margin: 0; box-shadow: none; page-break-after: always; }
-            .nav-bar, .calendar-trigger, .fan-stack { display: none !important; }
+            /* Grund-Reset für Druck */
+            body { 
+                display: block; 
+                background: none; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+            }
+            .page { 
+                display: block !important; 
+                width: 100%; height: 100%; 
+                margin: 0; box-shadow: none; 
+                page-break-after: always; 
+                overflow: visible; /* Damit Flyer nicht abgeschnitten werden */
+            }
+            .nav-bar, .hover-msg { display: none !important; }
             .page:last-child { page-break-after: auto; }
+
+            /* Trigger & Kalender sichtbar machen */
+            .calendar-trigger {
+                position: absolute;
+                right: 50px; /* Etwas weiter reinziehen */
+                top: 15%;
+            }
+            .cal-card {
+                box-shadow: none; border: 1px solid #000;
+                transform: none !important; /* Keine 3D Effekte im Druck */
+            }
+
+            /* Flyer-Stapel ZWANGS-AUSFAHREN */
+            .fan-stack {
+                display: block;
+                width: auto; height: auto;
+                top: 50px; right: 100px; /* Position anpassen */
+            }
+
+            .fanned-doc {
+                opacity: 1 !important; /* Sicherstellen dass sichtbar */
+                box-shadow: none; border: 1px solid #ccc;
+            }
+
+            /* Hardcodierte Positionen für den Druck (damit man alle sieht) */
+            .fan-stack .doc1 { transform: translate(-300px, 10px) rotate(-15deg) !important; }
+            .fan-stack .doc2 { transform: translate(-240px, -30px) rotate(-8deg) !important; }
+            .fan-stack .doc3 { transform: translate(-180px, -60px) rotate(0deg) !important; }
+            .fan-stack .doc4 { transform: translate(-320px, -90px) rotate(-22deg) !important; }
+            .fan-stack .doc5 { transform: translate(-120px, -20px) rotate(10deg) !important; }
+            .fan-stack .doc6 { transform: translate(-370px, 50px) rotate(-30deg) !important; }
         }
     </style>
 </head>
@@ -253,6 +300,7 @@
                 <p>Nach unserem Gespräch hat sich mein Bild der Position geschärft. Ich sehe Engagement nicht als interne Insellösung, sondern als Startpunkt für die Außenwirkung.</p>
                 <br>
                 <p><strong>Mein Ansatz:</strong> Zufriedene Mitarbeiter sind unsere besten Markenbotschafter. Ich nutze meine Rolle, um interne Highlights so professionell aufzubereiten, dass sie <strong>automatisch auch als Standortmarketing</strong> funktionieren. So stärken wir Bad Saarow aus der Mitte heraus – effizient, lokal und im perfekten Einklang mit dem Cluster.</p>
+                <p>Auf den folgenden Seiten finden Sie konkrete Impulse für das Jahr 2026, die zeigen, wie ich operative Exzellenz mit strategischem Weitblick verbinde.</p>
             </div>
         </div>
         <div class="nav-bar"><span></span><div class="page-counter">1 / 5</div><button onclick="next(2)">Zu den Impulsen &#10095;</button></div>
@@ -265,16 +313,16 @@
         </div>
         <div class="content">
             <h1>Medizin erlebbar machen</h1>
-            <h2>Symposien & Tage der offenen Tür</h2>
-            <p>Veranstaltungen wie das <strong>Mammasymposium</strong> oder der <strong>Tag der offenen Tür</strong> erfordern eine präzise Außenwirkung. Ich unterstütze bei der Erstellung von fachspezifischen Materialien und der Organisation vor Ort.</p>
+            <h2>Vertrauen durch Nähe</h2>
+            <p>Ob beim <strong>Teddybärkrankenhaus</strong> für junge Familien, den <strong>Herzwochen</strong> oder dem hochkarätigen <strong>Mammasymposium</strong>: Ich sorge für einen Auftritt, der Kompetenz und Nahbarkeit vereint. Durch vorausschauende Planung entlasten wir die medizinischen Abteilungen.</p>
             
-            <ul style="margin-top: 30px;">
+            <ul style="margin-top: 20px;">
                 <li><strong>Ziel:</strong> Professioneller Auftritt für Zuweiser & niederschwelliger Zugang für Patienten.</li>
-                <li><strong>Support:</strong> Layout-Zuarbeit (Flyer) und Event-Logistik.</li>
+                <li><strong>Support:</strong> Layout-Zuarbeit (Flyer), Event-Logistik und Koordination vor Ort.</li>
             </ul>
 
             <div class="calendar-trigger">
-                <div class="hover-msg">Termine anzeigen</div>
+                <div class="hover-msg">Jahresplan Externe Events</div>
                 <div class="cal-card">
                     <div class="cal-header-top"><div class="cal-year">2026</div></div>
                     <div class="cal-year-grid">
@@ -286,15 +334,22 @@
                         <div class="cal-month-box">
                             <div class="cal-month-name">JUN</div>
                             <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
-                            <div class="mark-circle" style="top: 8px; left: 8px;"></div> </div>
+                            <div class="mark-circle" style="top: 2px; left: 2px;" title="Teddy"></div> 
+                            <div class="mark-circle" style="bottom: 2px; right: 2px;" title="Symposium"></div> 
+                        </div>
                         <div class="cal-month-box">
                             <div class="cal-month-name">JUL</div>
                             <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
-                            <div class="mark-circle" style="bottom: 4px; right: 4px;"></div> </div>
+                            <div class="mark-circle" style="top: 50%; left: 50%; margin-left:-5px;" title="Open Door"></div> 
+                        </div>
                         <div class="cal-month-box"><div class="cal-month-name">AUG</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
                         <div class="cal-month-box"><div class="cal-month-name">SEP</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
                         <div class="cal-month-box"><div class="cal-month-name">OKT</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
-                        <div class="cal-month-box"><div class="cal-month-name">NOV</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">NOV</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="top: 5px; left: 5px;" title="Herz"></div> 
+                        </div>
                         <div class="cal-month-box"><div class="cal-month-name">DEZ</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
                     </div>
                 </div>
@@ -303,28 +358,33 @@
             <div class="fan-stack">
                 <div class="fanned-doc doc1 theme-magenta">
                     <div class="flyer-head"><div class="flyer-brand">Senologie</div></div>
-                    <div class="flyer-visual" style="background:#ffeef5;">
-                        <div style="background:var(--helios-magenta); width:100%; height:100%; clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%); opacity:0.2;"></div>
-                        <div class="flyer-curve"></div>
-                    </div>
-                    <div class="flyer-content">
-                        <div class="flyer-h1">XXIX. Mamma-<br>symposium</div>
-                        <div class="flyer-h2">Fortgeschrittenes Karzinom</div>
-                        <div class="flyer-text"><strong>25. Juni 2026</strong><br>Konferenzraum "Theodor Fontane".<br>Zertifizierte Fortbildung.</div>
-                    </div>
-                    <div class="flyer-foot">Für medizinisches Fachpersonal</div>
+                    <div class="flyer-visual" style="background:#ffeef5;"><div class="flyer-curve"></div></div>
+                    <div class="flyer-content"><div class="flyer-h1">XXIX. Mamma-<br>symposium</div><div class="flyer-h2">Juni 2026</div><div class="flyer-text">Zertifizierte Fortbildung für Fachpersonal.</div></div>
+                    <div class="flyer-foot">Ärztliche Fortbildung</div>
                 </div>
-                <div class="fanned-doc doc2">
-                    <div class="flyer-head"><div class="flyer-brand">Helios</div></div>
-                    <div class="flyer-visual" style="background:#dbeef5;">
-                         <div class="flyer-curve"></div>
-                    </div>
-                    <div class="flyer-content">
-                        <div class="flyer-h1">Klinikum<br>Hautnah</div>
-                        <div class="flyer-h2">Tag der offenen Tür</div>
-                        <div class="flyer-text"><strong>04. Juli 2026</strong><br>Blick hinter die Kulissen.<br>Programm für die ganze Familie.</div>
-                    </div>
+                <div class="fanned-doc doc2 theme-orange">
+                    <div class="flyer-head"><div class="flyer-brand">Kindertag</div></div>
+                    <div class="flyer-visual" style="background:#ffddaa;"><div class="flyer-curve"></div></div>
+                    <div class="flyer-content"><div class="flyer-h1">Teddybär-<br>Krankenhaus</div><div class="flyer-h2">01. Juni 2026</div><div class="flyer-text">Keine Angst vor dem Arzt: Bring dein Kuscheltier zum Röntgen!</div></div>
                     <div class="flyer-foot">Eintritt Frei</div>
+                </div>
+                <div class="fanned-doc doc3">
+                    <div class="flyer-head"><div class="flyer-brand">Helios</div></div>
+                    <div class="flyer-visual" style="background:#dbeef5;"><div class="flyer-curve"></div></div>
+                    <div class="flyer-content"><div class="flyer-h1">Klinikum<br>Hautnah</div><div class="flyer-h2">Tag der offenen Tür</div><div class="flyer-text">Blick hinter die Kulissen am 04. Juli 2026.</div></div>
+                    <div class="flyer-foot">Willkommen</div>
+                </div>
+                <div class="fanned-doc doc4">
+                    <div class="flyer-head"><div class="flyer-brand">Kardiologie</div></div>
+                    <div class="flyer-visual" style="background:#ffcccc;"><div class="flyer-curve"></div></div>
+                    <div class="flyer-content"><div class="flyer-h1">Herz in<br>Gefahr?</div><div class="flyer-h2">Herzwochen Nov.</div><div class="flyer-text">Bluthochdruck erkennen. Vorträge im Konferenzzentrum.</div></div>
+                    <div class="flyer-foot">Vorsorge</div>
+                </div>
+                <div class="fanned-doc doc5">
+                    <div class="flyer-head"><div class="flyer-brand">Geburtshilfe</div></div>
+                    <div class="flyer-visual" style="background:#eef;"><div class="flyer-curve"></div></div>
+                    <div class="flyer-content"><div class="flyer-h1">Sicher ins<br>Leben</div><div class="flyer-h2">Eltern-Infoabend</div><div class="flyer-text">Jeden 1. Dienstag im Monat. Kreißsaalführung.</div></div>
+                    <div class="flyer-foot">Anmeldung erbeten</div>
                 </div>
             </div>
         </div>
@@ -337,9 +397,9 @@
             <div class="sub-header">Medien & Öffentlichkeit</div>
         </div>
         <div class="content">
-            <h1>Nachrichten steuern</h1>
-            <h2>Pressemitteilungen & Zuarbeit</h2>
-            <p>Die Eröffnung der <strong>Klinik für Nephrologie</strong> oder medizinische Meilensteine brauchen klare Worte. Ich liefere der Cluster-PR gut recherchierte Rohdaten und Textentwürfe.</p>
+            <h1>Reputation steuern</h1>
+            <h2>Jubiläen & Auszeichnungen</h2>
+            <p>2026 ist das Jahr der Meilensteine: <strong>30 Jahre Brustzentrum</strong> und die Eröffnung der <strong>Nephrologie</strong>. Ich liefere der Cluster-PR die Fakten für starke Geschichten, die Bad Saarow als Leuchtturm der Region positionieren.</p>
 
              <div class="calendar-trigger">
                 <div class="hover-msg">PR-Planung öffnen</div>
@@ -348,19 +408,11 @@
                     <div class="cal-year-grid">
                         <div class="cal-month-box"><div class="cal-month-name">JAN</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
                         <div class="cal-month-box"><div class="cal-month-name">FEB</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
-                        <div class="cal-month-box">
-                            <div class="cal-month-name">MRZ</div>
-                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
-                            <div class="mark-circle" style="bottom: 3px; left: 3px;"></div>
-                        </div>
-                        <div class="cal-month-box">
-                            <div class="cal-month-name">APR</div>
-                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
-                            <div class="mark-circle" style="top: 5px; right: 5px;"></div>
-                        </div>
-                        <div class="cal-month-box"><div class="cal-month-name">MAI</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
-                        <div class="cal-month-box"><div class="cal-month-name">JUN</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
-                        <div class="cal-month-box"><div class="cal-month-name">JUL</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">MRZ</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">APR</div><div class="greeking-lines"><div class="g-line"></div></div><div class="mark-circle" style="top:5px;right:5px;"></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">MAI</div><div class="greeking-lines"><div class="g-line"></div></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">JUN</div><div class="greeking-lines"><div class="g-line"></div></div><div class="mark-circle" style="bottom:5px;left:5px;"></div></div>
+                        <div class="cal-month-box"><div class="cal-month-name">JUL</div><div class="greeking-lines"><div class="g-line"></div></div><div class="mark-circle" style="top:50%;left:50%;margin-left:-5px;"></div></div>
                         <div class="cal-month-box"><div class="cal-month-name">AUG</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
                         <div class="cal-month-box"><div class="cal-month-name">SEP</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
                         <div class="cal-month-box"><div class="cal-month-name">OKT</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
@@ -372,31 +424,16 @@
 
             <div class="fan-stack">
                 <div class="fanned-doc doc1 doc-pr">
-                    <div class="flyer-head">
-                        <div class="flyer-brand" style="font-size:10px;">Pressemitteilung</div>
-                        <div style="font-size:6px;">18.02.2026</div>
-                    </div>
-                    <div class="flyer-content">
-                        <div class="flyer-h1">Erweiterung des Spektrums:<br>Neue Klinik für Nephrologie</div>
-                        <div class="flyer-text">
-                            <strong>Bad Saarow.</strong> Am 01. April 2026 eröffnet das Helios Klinikum Bad Saarow die neue Klinik für Nephrologie, Infektiologie und Antibiotic Stewardship.<br><br>
-                            "Mit diesem Schritt schließen wir eine wichtige Versorgungslücke in der Region", so Klinikgeschäftsführerin Carmen Bier. Die interdisziplinäre Zusammenarbeit...
-                        </div>
-                    </div>
-                    <div class="flyer-foot">Pressekontakt Cluster BB</div>
+                    <div class="flyer-head"><div class="flyer-brand" style="font-size:10px;">Pressemitteilung</div><div style="font-size:6px;">01.04.2026</div></div>
+                    <div class="flyer-content"><div class="flyer-h1">Neueröffnung:<br>Klinik für Nephrologie</div><div class="flyer-text"><strong>Bad Saarow.</strong> Schließung einer Versorgungslücke in der Region. Interdisziplinäre Zusammenarbeit stärkt den Standort.</div></div>
                 </div>
                 <div class="fanned-doc doc2 doc-pr">
-                    <div class="flyer-head">
-                        <div class="flyer-brand">Interview-Briefing</div>
-                    </div>
-                    <div class="flyer-content">
-                        <div class="flyer-h1">Hintergrundgespräch:<br>Chefarzt Prof. Zaatar</div>
-                        <div class="flyer-text" style="font-family: Arial, sans-serif;">
-                            <strong>Thema:</strong> Berufung zur W2-Professur.<br>
-                            <strong>Zielmedium:</strong> Lokalpresse & Ärzteblatt.<br>
-                            <strong>Kernbotschaft:</strong> Verbindung von Forschung und Lehre mit exzellenter Patientenversorgung in Zehlendorf.
-                        </div>
-                    </div>
+                    <div class="flyer-head"><div class="flyer-brand">Jubiläum</div></div>
+                    <div class="flyer-content"><div class="flyer-h1">30 Jahre Spitzenmedizin:<br>Brustzentrum feiert</div><div class="flyer-text">Rückblick auf drei Jahrzehnte onkologische Exzellenz. Festakt mit Gesundheitsministerin geplant für Juni 2026.</div></div>
+                </div>
+                 <div class="fanned-doc doc3 doc-pr">
+                    <div class="flyer-head"><div class="flyer-brand">Auszeichnung</div></div>
+                    <div class="flyer-content"><div class="flyer-h1">Focus Ärzteliste:<br>Top-Mediziner 2026</div><div class="flyer-text">Fünf Chefärzte aus Bad Saarow erneut ausgezeichnet. Bestätigung für hohe Behandlungsqualität und Patientenzufriedenheit.</div></div>
                 </div>
             </div>
         </div>
@@ -406,20 +443,15 @@
     <div class="page" id="p4">
         <div class="header-bar">
             <div class="logo-text">Events <span>Intern</span></div>
-            <div class="sub-header">Mitarbeiterbindung & Wertschätzung</div>
+            <div class="sub-header">Mitarbeiterbindung</div>
         </div>
         <div class="content">
-            <h1>Wir-Gefühl stärken</h1>
-            <h2>Kleine Gesten & Große Feste</h2>
-            <p>Mitarbeiterbindung entsteht durch Aufmerksamkeit. Ob beim großen <strong>Sommerfest</strong> oder durch kleine Gesten am <strong>Frauentag</strong> oder <strong>Tag der Pflege</strong>.</p>
+            <h1>Das ganze Jahr präsent</h1>
+            <h2>Von Eiscreme bis Nikolaus</h2>
+            <p>Mitarbeiterbindung ist kein einmaliges Event. Mit Aktionen wie dem <strong>"Cool Down" Eis-Tag</strong> im Sommer, dem <strong>Azubi-Welcome</strong> oder einem Nikolaus-Frühstück schaffen wir durchgehend positive Touchpoints.</p>
             
-            <ul style="margin-top: 20px;">
-                <li><strong>Konzept:</strong> Emotionale Highlights im Arbeitsalltag setzen.</li>
-                <li><strong>Umsetzung:</strong> Organisation der Verteilung (z.B. Rosen) und Event-Planung.</li>
-            </ul>
-
             <div class="calendar-trigger">
-                <div class="hover-msg">Mitarbeiter-Aktionen</div>
+                <div class="hover-msg">Jahresplan Mitarbeiter</div>
                 <div class="cal-card">
                     <div class="cal-header-top"><div class="cal-year">2026</div></div>
                     <div class="cal-year-grid">
@@ -428,55 +460,42 @@
                         <div class="cal-month-box">
                             <div class="cal-month-name">MRZ</div>
                             <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
-                            <div class="mark-circle" style="top: 50%; left: 50%; margin-left:-5px; margin-top:-5px;"></div>
-                        </div>
+                            <div class="mark-circle" style="top: 2px; right: 2px;"></div> </div>
                         <div class="cal-month-box"><div class="cal-month-name">APR</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
                         <div class="cal-month-box">
                             <div class="cal-month-name">MAI</div>
                             <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
-                            <div class="mark-circle" style="bottom: 3px; left: 3px;"></div>
-                        </div>
+                            <div class="mark-circle" style="bottom: 2px; left: 2px;"></div> </div>
                         <div class="cal-month-box">
                             <div class="cal-month-name">JUN</div>
                             <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
-                            <div class="mark-circle" style="top: 3px; right: 3px;"></div>
-                        </div>
-                        <div class="cal-month-box"><div class="cal-month-name">JUL</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                            <div class="mark-circle" style="top:50%;left:50%;margin-left:-5px;"></div> </div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">JUL</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="top:2px;left:2px;"></div> </div>
                         <div class="cal-month-box"><div class="cal-month-name">AUG</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
                         <div class="cal-month-box"><div class="cal-month-name">SEP</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
-                        <div class="cal-month-box"><div class="cal-month-name">OKT</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">OKT</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="bottom:2px;right:2px;"></div> </div>
                         <div class="cal-month-box"><div class="cal-month-name">NOV</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
-                        <div class="cal-month-box"><div class="cal-month-name">DEZ</div><div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div></div>
+                        <div class="cal-month-box">
+                            <div class="cal-month-name">DEZ</div>
+                            <div class="greeking-lines"><div class="g-line"></div><div class="g-line"></div></div>
+                            <div class="mark-circle" style="top:50%;left:50%;margin-left:-5px;"></div> </div>
                     </div>
                 </div>
             </div>
 
             <div class="fan-stack">
-                <div class="fanned-doc doc1">
-                    <div class="flyer-head"><div class="flyer-brand">Team Event</div></div>
-                    <div class="flyer-visual" style="background:#ffdd88;">
-                        <div class="flyer-curve"></div>
-                    </div>
-                    <div class="flyer-content">
-                        <div class="flyer-h1">Sommerfest<br>2026</div>
-                        <div class="flyer-h2">19. Juni 2026</div>
-                        <div class="flyer-text">Einladung für alle Mitarbeiter.<br>Drei Standorte - Eine Party.<br>Shuttle-Service inklusive.</div>
-                    </div>
-                    <div class="flyer-foot">Wir freuen uns auf Euch!</div>
-                </div>
-                <div class="fanned-doc doc2 theme-magenta">
-                    <div class="flyer-head"><div class="flyer-brand">Danke</div></div>
-                    <div class="flyer-visual" style="background:#ffccdd;">
-                        <div style="font-size:40px; text-align:center; line-height:80px; color:white; opacity:0.8;">⚘</div>
-                        <div class="flyer-curve"></div>
-                    </div>
-                    <div class="flyer-content">
-                        <div class="flyer-h1">Weltfrauentag<br>08. März</div>
-                        <div class="flyer-h2">Eine Rose für Dich</div>
-                        <div class="flyer-text">Als kleines Zeichen der Wertschätzung für euren unermüdlichen Einsatz.</div>
-                    </div>
-                    <div class="flyer-foot" style="background:var(--helios-magenta)">Helios sagt Danke</div>
-                </div>
+                <div class="fanned-doc doc1"><div class="flyer-head"><div class="flyer-brand">Team</div></div><div class="flyer-visual" style="background:#fe8;"><div class="flyer-curve"></div></div><div class="flyer-content"><div class="flyer-h1">Sommerfest</div><div class="flyer-h2">Juni 2026</div><div class="flyer-text">Drei Standorte feiern.</div></div></div>
+                <div class="fanned-doc doc2 theme-magenta"><div class="flyer-head"><div class="flyer-brand">Danke</div></div><div class="flyer-visual" style="background:#fcd;"><div class="flyer-curve"></div></div><div class="flyer-content"><div class="flyer-h1">Frauentag</div><div class="flyer-h2">08. März</div><div class="flyer-text">Eine Rose für Dich.</div></div></div>
+                <div class="fanned-doc doc3"><div class="flyer-head"><div class="flyer-brand">Cool Down</div></div><div class="flyer-visual" style="background:#cef;"><div class="flyer-curve"></div></div><div class="flyer-content"><div class="flyer-h1">Hitzefrei</div><div class="flyer-h2">15. Juli</div><div class="flyer-text">Gratis Eis für alle Schichten.</div></div></div>
+                <div class="fanned-doc doc4 theme-orange"><div class="flyer-head"><div class="flyer-brand">Welcome</div></div><div class="flyer-visual" style="background:#fb8;"><div class="flyer-curve"></div></div><div class="flyer-content"><div class="flyer-h1">Next Gen</div><div class="flyer-h2">Oktober</div><div class="flyer-text">Pizza & Mentoren-Talk.</div></div></div>
+                <div class="fanned-doc doc5"><div class="flyer-head"><div class="flyer-brand">Helden</div></div><div class="flyer-visual" style="background:#bfb;"><div class="flyer-curve"></div></div><div class="flyer-content"><div class="flyer-h1">Tag der Pflege</div><div class="flyer-h2">12. Mai</div><div class="flyer-text">Wir sagen Danke.</div></div></div>
+                 <div class="fanned-doc doc6 theme-magenta"><div class="flyer-head"><div class="flyer-brand">X-MAS</div></div><div class="flyer-visual" style="background:#ecc;"><div class="flyer-curve"></div></div><div class="flyer-content"><div class="flyer-h1">Stiefel Raus</div><div class="flyer-h2">06. Dez</div><div class="flyer-text">Der Nikolaus kommt auf Station.</div></div></div>
             </div>
         </div>
         <div class="nav-bar"><button onclick="next(3)">&#10094; Zurück</button><div class="page-counter">4 / 5</div><button onclick="next(5)">Fazit &#10095;</button></div>
@@ -501,7 +520,6 @@
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=004d55&bgcolor=ffffff&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3APaul%3BConstantin%0AFN%3AConstantin+Paul%0ATEL%3BTYPE%3DCELL%3A015254275824%0AEMAIL%3Aconstantin.paul%40gmail.com%0AADR%3A%3B%3BAm+Forst+6%3BBad+Saarow%3B%3B15526%3BGermany%0AEND%3AVCARD" 
                      alt="vCard Kontakt" class="qr-code">
             </div>
-
         </div>
         <div class="nav-bar"><button onclick="next(4)">&#10094; Zurück</button><div class="page-counter">5 / 5</div><span></span></div>
     </div>
